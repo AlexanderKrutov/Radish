@@ -1,0 +1,129 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{A501FA6D-921D-41FD-ADE1-E6412BFB3DDD}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Radish</RootNamespace>
+    <AssemblyName>Radish</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <DocumentationFile>bin\Debug\Radish.XML</DocumentationFile>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>false</Prefer32Bit>
+    <DocumentationFile>bin\Release\Radish.XML</DocumentationFile>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Attributes\RadishAttribute.cs" />
+    <Compile Include="Attributes\ResponseCode.cs" />
+    <Compile Include="Attributes\Method.cs" />
+    <Compile Include="Attributes\MethodDescription.cs" />
+    <Compile Include="Attributes\MethodTitle.cs" />
+    <Compile Include="Attributes\Order.cs" />
+    <Compile Include="Attributes\ResponseBodyDescription.cs" />
+    <Compile Include="Attributes\RequestBodyDescription.cs" />
+    <Compile Include="Attributes\RequestBodyExample.cs" />
+    <Compile Include="Attributes\RequestParameter.cs" />
+    <Compile Include="Attributes\ResponseBodyExample.cs" />
+    <Compile Include="Documentor.cs" />
+    <Compile Include="Templates\Bootstrap\Templates.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Templates.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Templates\Simple\Templates.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Templates.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Types\DocumentorContext.cs" />
+    <Compile Include="Types\DataFormat.cs" />
+    <Compile Include="Types\Rules.cs" />
+    <Compile Include="Templates\AbstractTemplateSet.cs" />
+    <Compile Include="Types\MethodGroup.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Templates\BootstrapTemplateSet.cs" />
+    <Compile Include="Templates\BasicTemplateSet.cs" />
+    <Compile Include="Templates\SimpleTemplateSet.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Templates\Bootstrap\Templates.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <SubType>Designer</SubType>
+      <LastGenOutput>Templates.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Templates\Simple\RequestParametersList.html" />
+    <EmbeddedResource Include="Templates\Simple\RequestParameter.html" />
+    <EmbeddedResource Include="Templates\Simple\RequestBodyExample.html" />
+    <EmbeddedResource Include="Templates\Simple\ResponseCodesList.html" />
+    <EmbeddedResource Include="Templates\Simple\ResponseCode.html" />
+    <EmbeddedResource Include="Templates\Simple\ResponseBodyExample.html" />
+    <EmbeddedResource Include="Templates\Simple\ResponseBodyDescription.html" />
+    <EmbeddedResource Include="Templates\Simple\Method.html" />
+    <EmbeddedResource Include="Templates\Simple\Page.html" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Templates\Simple\Templates.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <SubType>Designer</SubType>
+      <LastGenOutput>Templates.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Templates\Simple\RequestBodyDescription.html" />
+    <EmbeddedResource Include="Templates\Simple\MethodsGroup.html" />
+  </ItemGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <Content Include="Templates\Bootstrap\Method.html" />
+    <Content Include="Templates\Bootstrap\MethodsGroup.html" />
+    <Content Include="Templates\Bootstrap\Page.html" />
+    <Content Include="Templates\Bootstrap\RequestBodyDescription.html" />
+    <Content Include="Templates\Bootstrap\RequestBodyExample.html" />
+    <Content Include="Templates\Bootstrap\RequestParameter.html" />
+    <Content Include="Templates\Bootstrap\RequestParametersList.html" />
+    <Content Include="Templates\Bootstrap\ResponseBodyDescription.html" />
+    <Content Include="Templates\Bootstrap\ResponseBodyExample.html" />
+    <Content Include="Templates\Bootstrap\ResponseCode.html" />
+    <Content Include="Templates\Bootstrap\ResponseCodesList.html" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

@@ -1,0 +1,20 @@
+﻿<!-- Method -->
+<div class="method">
+	<div class="method-header">
+		<div class="method-header-route"> <div class="method-header-route-{{method}}">{{method}}</div>{{route}}</div>
+		<div class="method-header-toggler"><a href="javascript:toggle('method-description-{{id}}', 'toggle-{{id}}');"><div id="toggle-{{id}}" class="toggler">{{title}}</div></a></div>
+	</div>
+
+    <div class="method-description" id="method-description-{{id}}" style="display: none;">
+
+        <p>{{description}}</p>
+
+        {{request-parameters-list}}
+        {{request-body}}
+        {{request-body-example}}
+        {{response-body}}
+        {{response-body-example}}
+        {{response-codes-list}}
+    </div>
+
+</div>

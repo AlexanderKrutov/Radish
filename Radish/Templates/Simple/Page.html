@@ -1,0 +1,245 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>{{title}}</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="generator" content="Radish: https://github.com/alexanderkrutov/radish/">
+    <style type="text/css">
+        body 
+		{
+            font-family: monospace;
+        }
+
+		h4 
+		{
+			font-style: italic;
+		}
+		
+		p
+		{
+			margin-left: 10px;
+		}
+		
+		table 
+		{
+			width: 100%;
+			border-collapse: collapse;
+		}
+
+		table, th, td 
+		{
+			border: 1px solid #ccc;
+			padding: 10px;
+		}	
+
+		th
+		{
+			font-style: italic;
+			text-align: left;
+			background: #eee;
+		}
+		
+		.method
+		{
+			padding: 10px;
+		}
+		
+		.method-description
+		{
+			display: block;
+		}
+
+        div[class*='method-header-route-'] 
+        {
+            padding: 10px;
+            margin-right: 10px;
+            display: inline;
+            font-weight: bold;
+            min-width: 30px;
+        }
+		
+        .method-header-route-GET 
+		{
+            background: #5EA6C0;
+        }
+		
+        .method-header-route-POST 
+		{
+            background: #62A568;
+        }
+		
+		.method-header-route-PUT
+		{
+			background: #EADC4C;
+		}
+		
+		.method-header-route-DELETE
+		{
+			background: #ED5F35;
+		}
+
+        .method-header 
+		{
+            font-family: monospace;
+            background: #ccc;
+            padding: 10px 10px 10px 0px;
+        }
+
+		.method-header-route
+		{
+			display: inline-block;
+		}		
+		
+		.method-header-toggler
+		{
+			float: right;
+			display: inline-block;
+		}
+		
+	    .toggler 
+		{
+            display: inline-block;
+        }
+
+        .databox 
+        {
+            border: 1px solid;
+            border-color: #ccc;
+            padding: 5px;
+            overflow-y: scroll;
+            max-height: 300px;
+            width: 100%;
+            background: transparent;
+            color: black;
+            resize: none;
+        }
+		
+		.response-code
+		{
+			display: block;
+			padding-bottom: 10px;
+		}
+		
+		.response-codes
+		{
+			position: relative;
+		}
+
+        div[class*='response-code-box-'] 
+        {
+            float: left;
+            padding: 5px;
+            display: inline-block;
+            font-weight: bold;
+            border: 1px solid;
+        }
+
+        div[class*='response-code-box-2'] 
+        {
+            color: #0a0;
+        }
+
+        div[class*='response-code-box-4'] 
+        {
+            color: #FF6B00;
+        }
+
+        div[class*='response-code-box-5'] 
+        {
+            color: #f00;
+        }
+		
+		.response-code-description
+		{
+			padding: 5px;
+			display: inline-block;
+			margin-left: 20px;
+		}
+		
+		.parameter-name
+		{
+			font-style: italic;
+		}
+    </style>
+	
+	<script type="text/javascript">
+		function toggle(elementId, togglerId) 
+		{
+			var ele = document.getElementById(elementId);
+			var toggler = document.getElementById(togglerId);
+			
+			if(ele.style.display == "block") {
+				ele.style.display = "none";
+			}
+			else {
+				ele.style.display = "block";
+			}
+		}
+
+		function formatXml(xml) {
+		    var reg = /(>)(<)(\/*)/g;
+		    var wsexp = / *(.*) +\n/g;
+		    var contexp = /(<.+>)(.+\n)/g;
+		    xml = xml.replace(reg, '$1\n$2$3').replace(wsexp, '$1\n').replace(contexp, '$1\n$2');
+		    var pad = 0;
+		    var formatted = '';
+		    var lines = xml.split('\n');
+		    var indent = 0;
+		    var lastType = 'other';
+		    var transitions = {
+		        'single->single': 0,
+		        'single->closing': -1,
+		        'single->opening': 0,
+		        'single->other': 0,
+		        'closing->single': 0,
+		        'closing->closing': -1,
+		        'closing->opening': 0,
+		        'closing->other': 0,
+		        'opening->single': 1,
+		        'opening->closing': 0,
+		        'opening->opening': 1,
+		        'opening->other': 1,
+		        'other->single': 0,
+		        'other->closing': -1,
+		        'other->opening': 0,
+		        'other->other': 0
+		    };
+		    for (var i = 0; i < lines.length; i++) {
+		        var ln = lines[i];
+		        var single = Boolean(ln.match(/<.+\/>/));
+		        var closing = Boolean(ln.match(/<\/.+>/));
+		        var opening = Boolean(ln.match(/<[^!].*>/));
+		        var type = single ? 'single' : closing ? 'closing' : opening ? 'opening' : 'other';
+		        var fromTo = lastType + '->' + type;
+		        lastType = type;
+		        var padding = '';
+
+		        indent += transitions[fromTo];
+		        for (var j = 0; j < indent; j++) {
+		            padding += '    ';
+		        }
+		        if (fromTo == 'opening->closing')
+		            formatted = formatted.substr(0, formatted.length - 1) + ln + '\n';
+		        else
+		            formatted += padding + ln + '\n';
+		    }
+		    return formatted;
+		}
+
+		function highlightExampleCode(elementId, data, dataFormat) {
+		    if (dataFormat == "Json") {
+		        document.getElementById(elementId).innerHTML = JSON.stringify(JSON.parse(data), null, 4);
+		    }
+		    else if (dataFormat == "Xml") {
+		        document.getElementById(elementId).innerText = formatXml(data);
+		    }
+		    else
+		        document.getElementById(elementId).innerText = data;
+		}
+	</script>
+</head>
+<body>
+    <h1>{{title}}</h1>
+	{{methods-list}}
+</body>
+</html>

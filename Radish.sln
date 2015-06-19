@@ -1,0 +1,38 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2013
+VisualStudioVersion = 12.0.21005.1
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Radish", "Radish\Radish.csproj", "{A501FA6D-921D-41FD-ADE1-E6412BFB3DDD}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Radish.Demo", "Radish.Demo\Radish.Demo.csproj", "{B91864A4-1F18-44B2-B250-18693F025DB8}"
+	ProjectSection(ProjectDependencies) = postProject
+		{A501FA6D-921D-41FD-ADE1-E6412BFB3DDD} = {A501FA6D-921D-41FD-ADE1-E6412BFB3DDD}
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{E4BBE12F-E8A7-4A38-9F0D-AEE6EA153C9E}"
+	ProjectSection(SolutionItems) = preProject
+		.nuget\NuGet.Config = .nuget\NuGet.Config
+		.nuget\NuGet.exe = .nuget\NuGet.exe
+		.nuget\NuGet.targets = .nuget\NuGet.targets
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|AnyCPU = Debug|AnyCPU
+		Release|AnyCPU = Release|AnyCPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{A501FA6D-921D-41FD-ADE1-E6412BFB3DDD}.Debug|AnyCPU.ActiveCfg = Debug|Any CPU
+		{A501FA6D-921D-41FD-ADE1-E6412BFB3DDD}.Debug|AnyCPU.Build.0 = Debug|Any CPU
+		{A501FA6D-921D-41FD-ADE1-E6412BFB3DDD}.Release|AnyCPU.ActiveCfg = Release|Any CPU
+		{A501FA6D-921D-41FD-ADE1-E6412BFB3DDD}.Release|AnyCPU.Build.0 = Release|Any CPU
+		{B91864A4-1F18-44B2-B250-18693F025DB8}.Debug|AnyCPU.ActiveCfg = Debug|Any CPU
+		{B91864A4-1F18-44B2-B250-18693F025DB8}.Debug|AnyCPU.Build.0 = Debug|Any CPU
+		{B91864A4-1F18-44B2-B250-18693F025DB8}.Release|AnyCPU.ActiveCfg = Release|Any CPU
+		{B91864A4-1F18-44B2-B250-18693F025DB8}.Release|AnyCPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

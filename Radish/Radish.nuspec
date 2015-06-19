@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<package>
+  <metadata>
+    <id>$id$</id>
+	<title>$id$</title>
+    <version>$version$</version>
+    <authors>Alexander Krutov</authors>
+    <owners>Alexander Krutov</owners>
+    <licenseUrl>http://opensource.org/licenses/Apache-2.0</licenseUrl>
+    <projectUrl>http://github.com/AlexanderKrutov/radish</projectUrl>
+    <iconUrl>https://cdn.rawgit.com/AlexanderKrutov/radish/master/icon.png</iconUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>$description$</description>
+	<summary>$description$</summary>
+    <releaseNotes>Initial version</releaseNotes>
+    <copyright>Copyright 2015</copyright>
+    <tags>REST Documentation</tags>
+    <dependencies>
+    </dependencies>
+  </metadata>
+  <files>
+  </files> 
+</package>

@@ -1,0 +1,555 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="generator" content="Radish: https://github.com/alexanderkrutov/radish/">
+	   
+		<title>{{title}}</title>
+
+		<!-- Bootstrap core CSS -->
+		<link href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.4/css/bootstrap.min.css" rel="stylesheet">
+		<link href="https://cdnjs.cloudflare.com/ajax/libs/prettify/r298/prettify.css" rel="stylesheet">
+		<link href="https://cdnjs.cloudflare.com/ajax/libs/slidebars/0.10.2/slidebars.min.css" rel="stylesheet">
+		<link href="https://cdnjs.cloudflare.com/ajax/libs/jquery.tocify/1.9.0/stylesheets/jquery.tocify.min.css" rel="stylesheet">
+		
+		<!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+		<!--[if lt IE 9]>
+		  <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+		  <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+		<![endif]-->
+		
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.4/js/bootstrap.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/prettify/r298/run_prettify.min.js"></script>	
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/typeahead.js/0.10.5/typeahead.bundle.min.js"></script>		
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/typeahead.js/0.10.5/typeahead.jquery.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/slidebars/0.10.2/slidebars.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.9.1/jquery-ui.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.tocify/1.9.0/javascripts/jquery.tocify.min.js"></script>
+		
+		<style type="text/css">
+		
+			/* Main */
+
+			html {
+				position: relative;
+				min-height: 100%;
+			}
+			
+			body {
+				padding-top: 80px;
+				margin-bottom: 60px;
+			}
+			
+			@media(min-width:768px) {		
+				body {
+					padding-top: 40px;
+					margin-bottom: 60px;
+				}
+			}			
+			
+			h3 {
+				font-size: 16px;
+				margin-top: 3px;
+			}
+						
+			.footer {
+				position: absolute;
+				bottom: 0;
+				width: 100%;
+				height: 22px;
+				background-color: #fff;
+			}
+			
+			.fullwidth {
+				width: 100%;
+				padding-left: 10px;
+				padding-right: 10px;
+			}
+
+            .parameter-name {
+                font-style: italic;
+            }
+
+            .databox 
+            {
+                overflow-y: scroll;
+                max-height: 300px;
+            }
+			
+			@media(min-width:768px) {
+				.fullwidth {
+					width: 226px;
+					padding-left: 0px;
+					padding-right: 0px;
+				}
+			}
+			
+			.navbar-header {
+				float: none;
+			}
+			
+			.navbar-toggle {
+				display: none;
+			}
+			
+			@media(min-width:768px) {			
+				.navbar-toggle {
+					display: block;
+					float: left;
+					left: 20px;
+				}
+			}
+			
+			.navbar-brand {
+				margin-left: 5px;
+			}
+			
+			.label-method-POST {
+				background-color: #10a54a;
+			}
+			.label-method-GET {
+				background-color: #0f6ab4;
+			}
+			.label-method-PUT {
+				background-color: #c5862b;
+			}
+			.label-method-PATCH {
+				background-color: #ffdc00;
+			}
+			.label-method-DELETE {
+				background-color: #a41e22;
+			}
+			.label-method-HEAD {
+				background-color: #4ae597;
+			}
+			.label-method-OPTIONS {
+				background-color: #bdc3c7;
+			}
+			
+			[class^="label-response-code-2"] {
+				background-color: #10a54a;
+			}
+			[class^="label-response-code-4"] {
+				background-color: #c5862b;
+			}
+			[class^="label-response-code-5"] {
+				background-color: #a41e22;
+			}
+
+			[class^="alert-response-code-2"] {
+				color: #3c763d;
+				background-color: #dff0d8;
+				border-color: #d6e9c6;
+			}	
+			[class^="alert-response-code-4"] {
+				color: #8a6d3b;
+				background-color: #fcf8e3;
+				border-color: #faebcc;
+			}			
+			[class^="alert-response-code-5"] {
+				color: #a94442;
+				background-color: #f2dede;
+				border-color: #ebccd1;
+			}			
+		
+			/* Code prettify */
+			
+			pre.prettyprint {
+				border: 1px solid #ccc;
+				margin-bottom: 0;
+				padding: 9.5px;
+			}
+
+			/* Typeahead */
+			
+			.twitter-typeahead .tt-input,
+			.twitter-typeahead .tt-hint {
+				margin-bottom: 0;
+			}
+			
+			.tt-hint {
+				display: block;
+				width: 100%;
+				padding: 8px 12px;
+				font-size: 14px;
+				line-height: 1.428571429;
+				color: #fff;
+				vertical-align: middle;
+				background-color: #ffffff;
+				border: 1px solid #cccccc;
+				border-radius: 4px;
+				-webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+				box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+				-webkit-transition: border-color ease-in-out 0.15s, box-shadow ease-in-out 0.15s;
+				transition: border-color ease-in-out 0.15s, box-shadow ease-in-out 0.15s;
+			}
+			
+			.tt-dropdown-menu {
+				min-width: 160px;
+				margin-top: 2px;
+				padding: 5px 0;
+				background-color: #ffffff;
+				border: 1px solid #cccccc;
+				border: 1px solid rgba(0, 0, 0, 0.15);
+				border-radius: 4px;
+				-webkit-box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);
+				box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);
+				background-clip: padding-box;
+                width: 100%;
+			}
+			
+			.tt-suggestion {
+				display: block;
+				padding: 3px 20px;
+			}
+
+			.tt-suggestion.tt-cursor {
+				color: #fff;
+				background-color: #428bca;
+				cursor: pointer;
+			}
+			
+			.tt-suggestion.tt-cursor a {
+				color: #fff;
+			}
+			
+			.tt-suggestion p {
+				margin: 0;
+			}			
+
+			.twitter-typeahead {
+				width: 100%;
+			}
+
+			/* Tocify */
+			
+			.tocify {
+				display: none;
+			}
+			
+			@media(min-width:768px) {
+				.tocify {
+					display: block;
+					width: 230px;
+					margin-left: 20px;
+					position: relative;
+				}
+			}			
+
+			/* Toggle and sidebar styles */
+
+			#wrapper {
+				padding-left: 0;
+				-webkit-transition: all 0.5s ease;
+				-moz-transition: all 0.5s ease;
+				-o-transition: all 0.5s ease;
+				transition: all 0.5s ease;
+			}
+			
+			#wrapper.toggled #sidebar-wrapper {
+				width: 250px;
+			}
+
+			#page-content-wrapper {
+				width: 100%;
+				position: absolute;
+				padding: 15px;
+			}
+
+			#wrapper.toggled #page-content-wrapper {
+				position: absolute;
+				margin-right: -250px;
+			}
+			
+			#wrapper.toggled {
+				padding-left: 0;
+			}
+			
+			#sidebar-wrapper {
+				width: 100%;
+				padding-top: 40px;
+			}
+			
+			#wrapper.toggled #sidebar-wrapper {
+				width: 0;
+			}
+
+			#page-content-wrapper {
+				padding: 20px;
+				position: relative;
+			}
+
+			#wrapper.toggled #page-content-wrapper {
+				position: relative;
+				margin-right: 0;
+			}		
+			
+			@media(min-width:768px) {
+				#wrapper {
+					padding-left: 0;
+					-webkit-transition: all 0.5s ease;
+					-moz-transition: all 0.5s ease;
+					-o-transition: all 0.5s ease;
+					transition: all 0.5s ease;
+				}
+
+				#wrapper.toggled {
+					padding-left: 250px;
+				}
+
+				#sidebar-wrapper {
+					padding-top: 40px;
+					z-index: 1000;
+					position: fixed;
+					width: 0;
+					height: 100%;
+					margin-left: -250px;
+					overflow-y: auto;
+					-webkit-transition: all 0.5s ease;
+					-moz-transition: all 0.5s ease;
+					-o-transition: all 0.5s ease;
+					transition: all 0.5s ease;
+				}
+
+				#wrapper.toggled #sidebar-wrapper {
+					width: 250px;
+				}
+
+				#page-content-wrapper {
+					width: 100%;
+					position: absolute;
+					padding: 15px;
+				}
+
+				#wrapper.toggled #page-content-wrapper {
+					position: absolute;
+					margin-right: -250px;
+				}
+
+				#wrapper {
+					padding-left: 250px;
+				}
+
+				#wrapper.toggled {
+					padding-left: 0;
+				}
+				
+				#sidebar-wrapper {
+					width: 250px;
+				}
+				
+				#wrapper.toggled #sidebar-wrapper {
+					width: 0;
+				}
+
+				#page-content-wrapper {
+					padding: 20px;
+					position: relative;
+				}
+
+				#wrapper.toggled #page-content-wrapper {
+					position: relative;
+					margin-right: 0;
+				}
+			}
+		</style>
+        
+        <script type="text/javascript">
+            function formatXml(xml) {
+                var reg = /(>)(<)(\/*)/g;
+                var wsexp = / *(.*) +\n/g;
+                var contexp = /(<.+>)(.+\n)/g;
+                xml = xml.replace(reg, '$1\n$2$3').replace(wsexp, '$1\n').replace(contexp, '$1\n$2');
+                var pad = 0;
+                var formatted = '';
+                var lines = xml.split('\n');
+                var indent = 0;
+                var lastType = 'other';
+                var transitions = {
+                    'single->single': 0,
+                    'single->closing': -1,
+                    'single->opening': 0,
+                    'single->other': 0,
+                    'closing->single': 0,
+                    'closing->closing': -1,
+                    'closing->opening': 0,
+                    'closing->other': 0,
+                    'opening->single': 1,
+                    'opening->closing': 0,
+                    'opening->opening': 1,
+                    'opening->other': 1,
+                    'other->single': 0,
+                    'other->closing': -1,
+                    'other->opening': 0,
+                    'other->other': 0
+                };
+                for (var i = 0; i < lines.length; i++) {
+                    var ln = lines[i];
+                    var single = Boolean(ln.match(/<.+\/>/));
+                    var closing = Boolean(ln.match(/<\/.+>/));
+                    var opening = Boolean(ln.match(/<[^!].*>/));
+                    var type = single ? 'single' : closing ? 'closing' : opening ? 'opening' : 'other';
+                    var fromTo = lastType + '->' + type;
+                    lastType = type;
+                    var padding = '';
+
+                    indent += transitions[fromTo];
+                    for (var j = 0; j < indent; j++) {
+                        padding += '    ';
+                    }
+                    if (fromTo == 'opening->closing')
+                        formatted = formatted.substr(0, formatted.length - 1) + ln + '\n';
+                    else
+                        formatted += padding + ln + '\n';
+                }
+                return formatted;
+            }
+
+            function highlightExampleCode(elementId, data, dataFormat)
+            {
+                if (dataFormat == "Json")
+                {
+                    $("#"+elementId).html(JSON.stringify(JSON.parse(data), null, 4));
+                }
+                else if (dataFormat == "Xml")
+                {
+                    $("#"+elementId).text(formatXml(data));
+                }
+                else
+                    $("#"+elementId).text(data);
+            }
+
+        </script>  
+  </head>
+
+  <body>
+		<nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+			<div class="navbar-header">
+				<button type="button" class="navbar-toggle toggle-left" data-toggle="collapse" data-target="#navbar-collapse">
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+				</button>
+				<a class="toggle-left navbar-brand" href="#">{{title}}</a>
+				
+				<div class="pull-right fullwidth">
+					<div class="navbar-form">
+						<div class="input-group fullwidth">
+							<input type="text" class="form-control" placeholder="Search for method" id="search" autocomplete="off">
+						</div>
+					</div>
+				</div>
+			</div>	
+		</nav> 
+	
+		<div id="wrapper" class="toggled">
+		
+			<div class="container">
+
+				<div id="sidebar-wrapper">
+					<div id="toc"></div>
+				</div>
+				
+				<div id="page-content-wrapper">
+                    {{methods-list}}					  
+				</div>
+			</div>
+		</div>
+
+		<script type="text/javascript">
+            
+            var methodsList = [
+				{{json-methods-list}}
+			];	
+
+			var substringMatcher = function(strs) {
+			  return function findMatches(q, cb) {
+				var matches, substrRegex;
+			 
+				matches = [];
+			 
+				substrRegex = new RegExp(q, 'i');
+			 
+				$.each(strs, function(i, str) {
+				  if (substrRegex.test(str.title)) 
+				  {
+					matches.push(str);
+				  }
+				});
+				cb(matches);
+			  };
+			};
+
+			$(document).ready(function() {
+
+				$('#search').typeahead({
+					minLength: 1,
+					highlight: true,
+				},
+				{
+					 name: 'methods',
+					 displayKey: 'title',
+					 source: substringMatcher(methodsList),
+					 templates: 
+					 {
+						suggestion: function (item) {
+							return (
+								item.title + "<br>" +
+								"<samp>" +
+									"<span class='label label-method-" + item.method + "'>" + item.method +  "</span>&nbsp;" + 
+									"<span class='label label-default'>" + item.route + "</span>" +
+								"</samp>");
+						}
+					}
+				});
+				
+				$('#search').on('typeahead:selected', function(evt, item) {				
+					var methodPanel = $('#method-id-' + item.id);					
+					$('#collapse-method-' + item.id).collapse('show');
+					scrollTo(methodPanel);
+					blink(methodPanel);
+				});	
+
+				$(".toggle-left").click(function(e) {
+					e.preventDefault();
+					$("#wrapper").toggleClass("toggled");
+				});			
+				
+				$("#toc").tocify({ selectors: "h2, h3", scrollTo: 80 });
+							
+				$(".tocify-item").on("click", function(event) { 
+					var toc_id = $(event.currentTarget).data('unique');
+					var methodPanel = $('div[name=' + toc_id + ']').parents('.panel');
+					
+					if (methodPanel != null) {
+						methodPanel.children('.panel-collapse').collapse('show')
+						blink(methodPanel);
+					}
+				});		
+			});
+
+			function scrollTo(element)
+			{
+				$("html, body").animate({ scrollTop: element.offset().top - 80 }, 500);
+			}
+
+			function blink(element) 
+			{
+			  var count = 0;
+			  var interval = setInterval (function() {
+				if (element.hasClass('panel-success')) {
+				  element.removeClass('panel-success'); ++count;
+				}
+				else
+				  element.addClass('panel-success');
+
+				if (count === 3) clearInterval(interval);
+			  }, 300);
+			}
+
+		</script>
+	</body>
+</html>
