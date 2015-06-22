@@ -1,0 +1,851 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Radish Demo</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="generator" content="Radish: https://github.com/alexanderkrutov/radish/">
+    <style type="text/css">
+        body 
+		{
+            font-family: monospace;
+        }
+
+		h4 
+		{
+			font-style: italic;
+		}
+		
+		p
+		{
+			margin-left: 10px;
+		}
+		
+		table 
+		{
+			width: 100%;
+			border-collapse: collapse;
+		}
+
+		table, th, td 
+		{
+			border: 1px solid #ccc;
+			padding: 10px;
+		}	
+
+		th
+		{
+			font-style: italic;
+			text-align: left;
+			background: #eee;
+		}
+		
+		.method
+		{
+			padding: 10px;
+		}
+		
+		.method-description
+		{
+			display: block;
+		}
+
+        div[class*='method-header-route-'] 
+        {
+            padding: 10px;
+            margin-right: 10px;
+            display: inline;
+            font-weight: bold;
+            min-width: 30px;
+        }
+		
+        .method-header-route-GET 
+		{
+            background: #5EA6C0;
+        }
+		
+        .method-header-route-POST 
+		{
+            background: #62A568;
+        }
+		
+		.method-header-route-PUT
+		{
+			background: #EADC4C;
+		}
+		
+		.method-header-route-DELETE
+		{
+			background: #ED5F35;
+		}
+
+        .method-header 
+		{
+            font-family: monospace;
+            background: #ccc;
+            padding: 10px 10px 10px 0px;
+        }
+
+		.method-header-route
+		{
+			display: inline-block;
+		}		
+		
+		.method-header-toggler
+		{
+			float: right;
+			display: inline-block;
+		}
+		
+	    .toggler 
+		{
+            display: inline-block;
+        }
+
+        .databox 
+        {
+            border: 1px solid;
+            border-color: #ccc;
+            padding: 5px;
+            overflow-y: scroll;
+            max-height: 300px;
+            width: 100%;
+            background: transparent;
+            color: black;
+            resize: none;
+        }
+		
+		.response-code
+		{
+			display: block;
+			padding-bottom: 10px;
+		}
+		
+		.response-codes
+		{
+			position: relative;
+		}
+
+        div[class*='response-code-box-'] 
+        {
+            float: left;
+            padding: 5px;
+            display: inline-block;
+            font-weight: bold;
+            border: 1px solid;
+        }
+
+        div[class*='response-code-box-2'] 
+        {
+            color: #0a0;
+        }
+
+        div[class*='response-code-box-4'] 
+        {
+            color: #FF6B00;
+        }
+
+        div[class*='response-code-box-5'] 
+        {
+            color: #f00;
+        }
+		
+		.response-code-description
+		{
+			padding: 5px;
+			display: inline-block;
+			margin-left: 20px;
+		}
+		
+		.parameter-name
+		{
+			font-style: italic;
+		}
+    </style>
+	
+	<script type="text/javascript">
+		function toggle(elementId, togglerId) 
+		{
+			var ele = document.getElementById(elementId);
+			var toggler = document.getElementById(togglerId);
+			
+			if(ele.style.display == "block") {
+				ele.style.display = "none";
+			}
+			else {
+				ele.style.display = "block";
+			}
+		}
+
+		function formatXml(xml) {
+		    var reg = /(>)(<)(\/*)/g;
+		    var wsexp = / *(.*) +\n/g;
+		    var contexp = /(<.+>)(.+\n)/g;
+		    xml = xml.replace(reg, '$1\n$2$3').replace(wsexp, '$1\n').replace(contexp, '$1\n$2');
+		    var pad = 0;
+		    var formatted = '';
+		    var lines = xml.split('\n');
+		    var indent = 0;
+		    var lastType = 'other';
+		    var transitions = {
+		        'single->single': 0,
+		        'single->closing': -1,
+		        'single->opening': 0,
+		        'single->other': 0,
+		        'closing->single': 0,
+		        'closing->closing': -1,
+		        'closing->opening': 0,
+		        'closing->other': 0,
+		        'opening->single': 1,
+		        'opening->closing': 0,
+		        'opening->opening': 1,
+		        'opening->other': 1,
+		        'other->single': 0,
+		        'other->closing': -1,
+		        'other->opening': 0,
+		        'other->other': 0
+		    };
+		    for (var i = 0; i < lines.length; i++) {
+		        var ln = lines[i];
+		        var single = Boolean(ln.match(/<.+\/>/));
+		        var closing = Boolean(ln.match(/<\/.+>/));
+		        var opening = Boolean(ln.match(/<[^!].*>/));
+		        var type = single ? 'single' : closing ? 'closing' : opening ? 'opening' : 'other';
+		        var fromTo = lastType + '->' + type;
+		        lastType = type;
+		        var padding = '';
+
+		        indent += transitions[fromTo];
+		        for (var j = 0; j < indent; j++) {
+		            padding += '    ';
+		        }
+		        if (fromTo == 'opening->closing')
+		            formatted = formatted.substr(0, formatted.length - 1) + ln + '\n';
+		        else
+		            formatted += padding + ln + '\n';
+		    }
+		    return formatted;
+		}
+
+		function highlightExampleCode(elementId, data, dataFormat) {
+		    if (dataFormat == "Json") {
+		        document.getElementById(elementId).innerHTML = JSON.stringify(JSON.parse(data), null, 4);
+		    }
+		    else if (dataFormat == "Xml") {
+		        document.getElementById(elementId).innerText = formatXml(data);
+		    }
+		    else
+		        document.getElementById(elementId).innerText = data;
+		}
+	</script>
+</head>
+<body>
+    <h1>Radish Demo</h1>
+	<!-- Methods group -->
+<h2>Persons</h2>
+<p>Describes methods to work with Person objects<p><!-- Method -->
+<div class="method">
+	<div class="method-header">
+		<div class="method-header-route"> <div class="method-header-route-GET">GET</div>/api/persons/</div>
+		<div class="method-header-toggler"><a href="javascript:toggle('method-description-persons-get', 'toggle-persons-get');"><div id="toggle-persons-get" class="toggler">Get all persons</div></a></div>
+	</div>
+
+    <div class="method-description" id="method-description-persons-get" style="display: none;">
+
+        <p></p>
+
+        
+        
+        
+        <!-- Response body description -->
+<h4>Response</h4>
+<p>Json-serialized list of Persons objects</p>
+        <!-- Response body example -->
+<h4>Response example</h4>
+<pre id="response-example-persons-get" class="databox">
+</pre>
+
+<script type="text/javascript">
+    highlightExampleCode('response-example-persons-get', '[{\"Id\":1,\"FirstName\":\"Alice\",\"LastName\":\"Appleseed\",\"Age\":20,\"Pets\":[],\"Gender\":2},{\"Id\":2,\"FirstName\":\"Bob\",\"LastName\":\"Brown\",\"Age\":35,\"Pets\":[],\"Gender\":1},{\"Id\":3,\"FirstName\":\"Chris\",\"LastName\":\"Campbell\",\"Age\":27,\"Pets\":[],\"Gender\":1},{\"Id\":4,\"FirstName\":\"Diana\",\"LastName\":\"Doll\",\"Age\":64,\"Pets\":[],\"Gender\":2}]', 'Json');
+</script>
+        <!-- Response codes -->
+<h4>Response codes</h4>
+<div class="response-codes">
+	<!-- response code -->
+<div class="response-code"> 
+	<div class="response-code-box-200">200</div>
+	<div class="response-code-description">OK. On successfull result.</div>
+</div>
+</div>
+    </div>
+
+</div><!-- Method -->
+<div class="method">
+	<div class="method-header">
+		<div class="method-header-route"> <div class="method-header-route-GET">GET</div>/api/persons/&lt;id&gt;</div>
+		<div class="method-header-toggler"><a href="javascript:toggle('method-description-person-get-by-id', 'toggle-person-get-by-id');"><div id="toggle-person-get-by-id" class="toggler">Get person</div></a></div>
+	</div>
+
+    <div class="method-description" id="method-description-person-get-by-id" style="display: none;">
+
+        <p>Returns Person object by specified id.</p>
+
+        <!-- Request parameters -->
+<h4>Request Parameters</h4>
+<table>
+	<tr>
+		<th>Parameter</th>
+		<th>Type</th>
+		<th>Required</th>
+		<th>Description</th>
+	</tr>
+	<!-- Request Parameter -->
+<tr>
+	<td class="parameter-name">id</td>
+	<td>Integer</td>
+	<td>True</td>
+	<td>Id of the Person</td>
+</tr>
+</table>
+        
+        
+        <!-- Response body description -->
+<h4>Response</h4>
+<p>Json-serialized Person object</p>
+        <!-- Response body example -->
+<h4>Response example</h4>
+<pre id="response-example-person-get-by-id" class="databox">
+</pre>
+
+<script type="text/javascript">
+    highlightExampleCode('response-example-person-get-by-id', '{\"Id\":2,\"FirstName\":\"Bob\",\"LastName\":\"Brown\",\"Age\":35,\"Pets\":[],\"Gender\":1}', 'Json');
+</script>
+        <!-- Response codes -->
+<h4>Response codes</h4>
+<div class="response-codes">
+	<!-- response code -->
+<div class="response-code"> 
+	<div class="response-code-box-200">200</div>
+	<div class="response-code-description">OK. On successful result.</div>
+</div><!-- response code -->
+<div class="response-code"> 
+	<div class="response-code-box-404">404</div>
+	<div class="response-code-description">Not Found. When person with specified id was not found.</div>
+</div>
+</div>
+    </div>
+
+</div><!-- Method -->
+<div class="method">
+	<div class="method-header">
+		<div class="method-header-route"> <div class="method-header-route-POST">POST</div>/api/persons</div>
+		<div class="method-header-toggler"><a href="javascript:toggle('method-description-persons-add', 'toggle-persons-add');"><div id="toggle-persons-add" class="toggler">Add new person</div></a></div>
+	</div>
+
+    <div class="method-description" id="method-description-persons-add" style="display: none;">
+
+        <p>Adds new Person.</p>
+
+        
+        <!-- Request body description -->
+<h4>Request</h4>
+<p>Json-serialized Person object<p>
+        <!-- Request body example -->
+<h4>Request body example</h4>
+<pre id="request-example-persons-add" class="databox">
+</pre>
+
+<script type="text/javascript">
+    highlightExampleCode('request-example-persons-add', '{\"FirstName\":\"Bob\",\"LastName\":\"Brown\",\"Age\":35,\"Pets\":[],\"Gender\":1}', 'Json');
+</script>
+        <!-- Response body description -->
+<h4>Response</h4>
+<p>Json-serialized Person object with assigned id</p>
+        <!-- Response body example -->
+<h4>Response example</h4>
+<pre id="response-example-persons-add" class="databox">
+</pre>
+
+<script type="text/javascript">
+    highlightExampleCode('response-example-persons-add', '{\"Id\":2,\"FirstName\":\"Bob\",\"LastName\":\"Brown\",\"Age\":35,\"Pets\":[],\"Gender\":1}', 'Json');
+</script>
+        <!-- Response codes -->
+<h4>Response codes</h4>
+<div class="response-codes">
+	<!-- response code -->
+<div class="response-code"> 
+	<div class="response-code-box-200">200</div>
+	<div class="response-code-description">OK. When person was successfully added.</div>
+</div><!-- response code -->
+<div class="response-code"> 
+	<div class="response-code-box-400">400</div>
+	<div class="response-code-description">Bad request. When incorrect data were passed.</div>
+</div><!-- response code -->
+<div class="response-code"> 
+	<div class="response-code-box-400">400</div>
+	<div class="response-code-description">Bad request. When passed Person object already contains assigned Id.</div>
+</div>
+</div>
+    </div>
+
+</div><!-- Method -->
+<div class="method">
+	<div class="method-header">
+		<div class="method-header-route"> <div class="method-header-route-PUT">PUT</div>/api/persons/&lt;id&gt;</div>
+		<div class="method-header-toggler"><a href="javascript:toggle('method-description-persons-update-by-id', 'toggle-persons-update-by-id');"><div id="toggle-persons-update-by-id" class="toggler">Update person</div></a></div>
+	</div>
+
+    <div class="method-description" id="method-description-persons-update-by-id" style="display: none;">
+
+        <p>Updates person with specified id.</p>
+
+        <!-- Request parameters -->
+<h4>Request Parameters</h4>
+<table>
+	<tr>
+		<th>Parameter</th>
+		<th>Type</th>
+		<th>Required</th>
+		<th>Description</th>
+	</tr>
+	<!-- Request Parameter -->
+<tr>
+	<td class="parameter-name">id</td>
+	<td>Integer</td>
+	<td>True</td>
+	<td>Id of the Person</td>
+</tr>
+</table>
+        <!-- Request body description -->
+<h4>Request</h4>
+<p>Json-serialized Person object to be updated.<p>
+        <!-- Request body example -->
+<h4>Request body example</h4>
+<pre id="request-example-persons-update-by-id" class="databox">
+</pre>
+
+<script type="text/javascript">
+    highlightExampleCode('request-example-persons-update-by-id', '{\"Id\":2,\"FirstName\":\"Bob\",\"LastName\":\"Brown\",\"Age\":35,\"Pets\":[],\"Gender\":1}', 'Json');
+</script>
+        <!-- Response body description -->
+<h4>Response</h4>
+<p>Updated Json-serialized Person object.</p>
+        <!-- Response body example -->
+<h4>Response example</h4>
+<pre id="response-example-persons-update-by-id" class="databox">
+</pre>
+
+<script type="text/javascript">
+    highlightExampleCode('response-example-persons-update-by-id', '{\"Id\":2,\"FirstName\":\"Bob\",\"LastName\":\"Brown\",\"Age\":35,\"Pets\":[],\"Gender\":1}', 'Json');
+</script>
+        <!-- Response codes -->
+<h4>Response codes</h4>
+<div class="response-codes">
+	<!-- response code -->
+<div class="response-code"> 
+	<div class="response-code-box-200">200</div>
+	<div class="response-code-description">OK. On successful update</div>
+</div><!-- response code -->
+<div class="response-code"> 
+	<div class="response-code-box-400">400</div>
+	<div class="response-code-description">Bad request. When incorrect data were passed.</div>
+</div><!-- response code -->
+<div class="response-code"> 
+	<div class="response-code-box-404">404</div>
+	<div class="response-code-description">Not Found. When person with specified Id was not found.</div>
+</div>
+</div>
+    </div>
+
+</div><!-- Method -->
+<div class="method">
+	<div class="method-header">
+		<div class="method-header-route"> <div class="method-header-route-DELETE">DELETE</div>/api/persons/&lt;id&gt;</div>
+		<div class="method-header-toggler"><a href="javascript:toggle('method-description-delete-person-by-id', 'toggle-delete-person-by-id');"><div id="toggle-delete-person-by-id" class="toggler">Delete person</div></a></div>
+	</div>
+
+    <div class="method-description" id="method-description-delete-person-by-id" style="display: none;">
+
+        <p>Deletes person with specified id.</p>
+
+        <!-- Request parameters -->
+<h4>Request Parameters</h4>
+<table>
+	<tr>
+		<th>Parameter</th>
+		<th>Type</th>
+		<th>Required</th>
+		<th>Description</th>
+	</tr>
+	<!-- Request Parameter -->
+<tr>
+	<td class="parameter-name">id</td>
+	<td>Integer</td>
+	<td>True</td>
+	<td>Id of the Person</td>
+</tr>
+</table>
+        
+        
+        
+        
+        <!-- Response codes -->
+<h4>Response codes</h4>
+<div class="response-codes">
+	<!-- response code -->
+<div class="response-code"> 
+	<div class="response-code-box-200">200</div>
+	<div class="response-code-description">OK. When person was deleted successful.</div>
+</div><!-- response code -->
+<div class="response-code"> 
+	<div class="response-code-box-404">404</div>
+	<div class="response-code-description">Not Found. When person with specified Id was not found.</div>
+</div>
+</div>
+    </div>
+
+</div><!-- Methods group -->
+<h2>Pets</h2>
+<p>Describes methods to work with Pet objects<p><!-- Method -->
+<div class="method">
+	<div class="method-header">
+		<div class="method-header-route"> <div class="method-header-route-GET">GET</div>/api/pets/</div>
+		<div class="method-header-toggler"><a href="javascript:toggle('method-description-pets-get', 'toggle-pets-get');"><div id="toggle-pets-get" class="toggler">Get list of all pets</div></a></div>
+	</div>
+
+    <div class="method-description" id="method-description-pets-get" style="display: none;">
+
+        <p>Returns list of all pets in the database.</p>
+
+        
+        
+        
+        <!-- Response body description -->
+<h4>Response</h4>
+<p>Json-serialized list of Pets objects</p>
+        <!-- Response body example -->
+<h4>Response example</h4>
+<pre id="response-example-pets-get" class="databox">
+</pre>
+
+<script type="text/javascript">
+    highlightExampleCode('response-example-pets-get', '[{\"Id\":1,\"AnimalType\":\"Cat\",\"Name\":\"Lisa\",\"Breed\":\"Turkish Angora\",\"Age\":2,\"Color\":\"White\",\"Gender\":2,\"OwnerId\":2},{\"Id\":2,\"AnimalType\":\"Dog\",\"Name\":\"Chuck\",\"Breed\":\"Spaniel\",\"Age\":5,\"Color\":\"Brown\",\"Gender\":1,\"OwnerId\":1},{\"Id\":3,\"AnimalType\":\"Parrot\",\"Name\":\"Steely\",\"Breed\":\"African grey\",\"Age\":3,\"Color\":\"Grey\",\"Gender\":1,\"OwnerId\":1},{\"Id\":4,\"AnimalType\":\"Guinea pig\",\"Name\":\"Fasty\",\"Breed\":\"Texel\",\"Age\":1,\"Color\":\"Red\",\"Gender\":2,\"OwnerId\":3},{\"Id\":5,\"AnimalType\":\"Cat\",\"Name\":\"Hamlet\",\"Breed\":\"Siamese\",\"Age\":3,\"Color\":\"Colorpoint\",\"Gender\":1,\"OwnerId\":4},{\"Id\":6,\"AnimalType\":\"Dog\",\"Name\":\"Guardi\",\"Breed\":\"Caucasian Shepherd\",\"Age\":5,\"Color\":\"White\",\"Gender\":2,\"OwnerId\":4}]', 'Json');
+</script>
+        <!-- Response codes -->
+<h4>Response codes</h4>
+<div class="response-codes">
+	<!-- response code -->
+<div class="response-code"> 
+	<div class="response-code-box-200">200</div>
+	<div class="response-code-description">OK. On successfull result.</div>
+</div>
+</div>
+    </div>
+
+</div><!-- Method -->
+<div class="method">
+	<div class="method-header">
+		<div class="method-header-route"> <div class="method-header-route-GET">GET</div>/api/pets/&lt;id&gt;</div>
+		<div class="method-header-toggler"><a href="javascript:toggle('method-description-pet-get-by-id', 'toggle-pet-get-by-id');"><div id="toggle-pet-get-by-id" class="toggler">Get pet</div></a></div>
+	</div>
+
+    <div class="method-description" id="method-description-pet-get-by-id" style="display: none;">
+
+        <p>Returns Pet object by specified id.</p>
+
+        <!-- Request parameters -->
+<h4>Request Parameters</h4>
+<table>
+	<tr>
+		<th>Parameter</th>
+		<th>Type</th>
+		<th>Required</th>
+		<th>Description</th>
+	</tr>
+	<!-- Request Parameter -->
+<tr>
+	<td class="parameter-name">id</td>
+	<td>Integer</td>
+	<td>True</td>
+	<td>Id of the Pet</td>
+</tr>
+</table>
+        
+        
+        <!-- Response body description -->
+<h4>Response</h4>
+<p>Json-serialized Pet object</p>
+        <!-- Response body example -->
+<h4>Response example</h4>
+<pre id="response-example-pet-get-by-id" class="databox">
+</pre>
+
+<script type="text/javascript">
+    highlightExampleCode('response-example-pet-get-by-id', '{\"Id\":1, \"AnimalType\":\"Cat\",\"Name\":\"Lisa\",\"Breed\":\"Turkish Angora\",\"Age\":2,\"Color\":\"White\"}', 'Json');
+</script>
+        <!-- Response codes -->
+<h4>Response codes</h4>
+<div class="response-codes">
+	<!-- response code -->
+<div class="response-code"> 
+	<div class="response-code-box-200">200</div>
+	<div class="response-code-description">OK. On successful result.</div>
+</div><!-- response code -->
+<div class="response-code"> 
+	<div class="response-code-box-404">404</div>
+	<div class="response-code-description">Not Found. When pet with specified id was not found.</div>
+</div>
+</div>
+    </div>
+
+</div><!-- Method -->
+<div class="method">
+	<div class="method-header">
+		<div class="method-header-route"> <div class="method-header-route-GET">GET</div>/api/persons/&lt;id&gt;/pets</div>
+		<div class="method-header-toggler"><a href="javascript:toggle('method-description-get-pets-for-person', 'toggle-get-pets-for-person');"><div id="toggle-get-pets-for-person" class="toggler">Get pets for person</div></a></div>
+	</div>
+
+    <div class="method-description" id="method-description-get-pets-for-person" style="display: none;">
+
+        <p>Get all pets for the person with specified id.</p>
+
+        <!-- Request parameters -->
+<h4>Request Parameters</h4>
+<table>
+	<tr>
+		<th>Parameter</th>
+		<th>Type</th>
+		<th>Required</th>
+		<th>Description</th>
+	</tr>
+	<!-- Request Parameter -->
+<tr>
+	<td class="parameter-name">id</td>
+	<td>Integer</td>
+	<td>True</td>
+	<td>Id of the Person</td>
+</tr>
+</table>
+        
+        
+        <!-- Response body description -->
+<h4>Response</h4>
+<p>Json-serialized list of pets for the specified person</p>
+        <!-- Response body example -->
+<h4>Response example</h4>
+<pre id="response-example-get-pets-for-person" class="databox">
+</pre>
+
+<script type="text/javascript">
+    highlightExampleCode('response-example-get-pets-for-person', '[{\"Id\":2,\"AnimalType\":\"Dog\",\"Name\":\"Chuck\",\"Breed\":\"Spaniel\",\"Age\":5,\"Color\":\"Brown\",\"Gender\":1,\"OwnerId\":1},{\"Id\":3,\"AnimalType\":\"Parrot\",\"Name\":\"Steely\",\"Breed\":\"African grey\",\"Age\":3,\"Color\":\"Grey\",\"Gender\":1,\"OwnerId\":1}]', 'Json');
+</script>
+        <!-- Response codes -->
+<h4>Response codes</h4>
+<div class="response-codes">
+	<!-- response code -->
+<div class="response-code"> 
+	<div class="response-code-box-200">200</div>
+	<div class="response-code-description">OK. On successful result.</div>
+</div><!-- response code -->
+<div class="response-code"> 
+	<div class="response-code-box-404">404</div>
+	<div class="response-code-description">Not Found. When person with specified Id was not found.</div>
+</div>
+</div>
+    </div>
+
+</div><!-- Method -->
+<div class="method">
+	<div class="method-header">
+		<div class="method-header-route"> <div class="method-header-route-POST">POST</div>/api/persons/&lt;id&gt;/pets/</div>
+		<div class="method-header-toggler"><a href="javascript:toggle('method-description-pets-add', 'toggle-pets-add');"><div id="toggle-pets-add" class="toggler">Add new pet to person</div></a></div>
+	</div>
+
+    <div class="method-description" id="method-description-pets-add" style="display: none;">
+
+        <p>Adds new Pet to the Person with specified id.</p>
+
+        <!-- Request parameters -->
+<h4>Request Parameters</h4>
+<table>
+	<tr>
+		<th>Parameter</th>
+		<th>Type</th>
+		<th>Required</th>
+		<th>Description</th>
+	</tr>
+	<!-- Request Parameter -->
+<tr>
+	<td class="parameter-name">id</td>
+	<td>Integer</td>
+	<td>True</td>
+	<td>Id of the person</td>
+</tr>
+</table>
+        <!-- Request body description -->
+<h4>Request</h4>
+<p>Json-serialized Pet object<p>
+        <!-- Request body example -->
+<h4>Request body example</h4>
+<pre id="request-example-pets-add" class="databox">
+</pre>
+
+<script type="text/javascript">
+    highlightExampleCode('request-example-pets-add', '{\"AnimalType\":\"Cat\",\"Name\":\"Lisa\",\"Breed\":\"Turkish Angora\",\"Age\":2,\"Color\":\"White\"}', 'Json');
+</script>
+        <!-- Response body description -->
+<h4>Response</h4>
+<p>Json-serialized Pet object with assigned id</p>
+        <!-- Response body example -->
+<h4>Response example</h4>
+<pre id="response-example-pets-add" class="databox">
+</pre>
+
+<script type="text/javascript">
+    highlightExampleCode('response-example-pets-add', '{\"Id\":1, \"AnimalType\":\"Cat\",\"Name\":\"Lisa\",\"Breed\":\"Turkish Angora\",\"Age\":2,\"Color\":\"White\"}', 'Json');
+</script>
+        <!-- Response codes -->
+<h4>Response codes</h4>
+<div class="response-codes">
+	<!-- response code -->
+<div class="response-code"> 
+	<div class="response-code-box-200">200</div>
+	<div class="response-code-description">OK. When pet was successfully added.</div>
+</div><!-- response code -->
+<div class="response-code"> 
+	<div class="response-code-box-400">400</div>
+	<div class="response-code-description">Bad request. When incorrect data were passed.</div>
+</div><!-- response code -->
+<div class="response-code"> 
+	<div class="response-code-box-400">400</div>
+	<div class="response-code-description">Bad request. When passed pet object already contains assigned Id.</div>
+</div><!-- response code -->
+<div class="response-code"> 
+	<div class="response-code-box-404">404</div>
+	<div class="response-code-description">Not Found. When person with specified Id was not found.</div>
+</div>
+</div>
+    </div>
+
+</div><!-- Method -->
+<div class="method">
+	<div class="method-header">
+		<div class="method-header-route"> <div class="method-header-route-PUT">PUT</div>/api/pets/&lt;id&gt;</div>
+		<div class="method-header-toggler"><a href="javascript:toggle('method-description-pets-update-by-id', 'toggle-pets-update-by-id');"><div id="toggle-pets-update-by-id" class="toggler">Update pet</div></a></div>
+	</div>
+
+    <div class="method-description" id="method-description-pets-update-by-id" style="display: none;">
+
+        <p>Updates pet with specified id.</p>
+
+        <!-- Request parameters -->
+<h4>Request Parameters</h4>
+<table>
+	<tr>
+		<th>Parameter</th>
+		<th>Type</th>
+		<th>Required</th>
+		<th>Description</th>
+	</tr>
+	<!-- Request Parameter -->
+<tr>
+	<td class="parameter-name">id</td>
+	<td>Integer</td>
+	<td>True</td>
+	<td>Id of the Pet</td>
+</tr>
+</table>
+        <!-- Request body description -->
+<h4>Request</h4>
+<p>Json-serialized Pet object to be updated.<p>
+        <!-- Request body example -->
+<h4>Request body example</h4>
+<pre id="request-example-pets-update-by-id" class="databox">
+</pre>
+
+<script type="text/javascript">
+    highlightExampleCode('request-example-pets-update-by-id', '{\"Id\":1, \"AnimalType\":\"Cat\",\"Name\":\"Lisa\",\"Breed\":\"Turkish Angora\",\"Age\":2,\"Color\":\"White\"}', 'Json');
+</script>
+        <!-- Response body description -->
+<h4>Response</h4>
+<p>Updated Json-serialized Pet object.</p>
+        <!-- Response body example -->
+<h4>Response example</h4>
+<pre id="response-example-pets-update-by-id" class="databox">
+</pre>
+
+<script type="text/javascript">
+    highlightExampleCode('response-example-pets-update-by-id', '{\"Id\":1, \"AnimalType\":\"Cat\",\"Name\":\"Lisa\",\"Breed\":\"Turkish Angora\",\"Age\":2,\"Color\":\"White\"}', 'Json');
+</script>
+        <!-- Response codes -->
+<h4>Response codes</h4>
+<div class="response-codes">
+	<!-- response code -->
+<div class="response-code"> 
+	<div class="response-code-box-200">200</div>
+	<div class="response-code-description">OK. On successful update</div>
+</div><!-- response code -->
+<div class="response-code"> 
+	<div class="response-code-box-400">400</div>
+	<div class="response-code-description">Bad request. When incorrect data were passed.</div>
+</div><!-- response code -->
+<div class="response-code"> 
+	<div class="response-code-box-404">404</div>
+	<div class="response-code-description">Not Found. When person with specified Id was not found.</div>
+</div><!-- response code -->
+<div class="response-code"> 
+	<div class="response-code-box-404">404</div>
+	<div class="response-code-description">Not Found. When pet with specified Id was not found.</div>
+</div>
+</div>
+    </div>
+
+</div><!-- Method -->
+<div class="method">
+	<div class="method-header">
+		<div class="method-header-route"> <div class="method-header-route-DELETE">DELETE</div>/api/pets/&lt;id&gt;</div>
+		<div class="method-header-toggler"><a href="javascript:toggle('method-description-delete-pet-by-id', 'toggle-delete-pet-by-id');"><div id="toggle-delete-pet-by-id" class="toggler">Delete pet</div></a></div>
+	</div>
+
+    <div class="method-description" id="method-description-delete-pet-by-id" style="display: none;">
+
+        <p>Deletes pet with specified id.</p>
+
+        <!-- Request parameters -->
+<h4>Request Parameters</h4>
+<table>
+	<tr>
+		<th>Parameter</th>
+		<th>Type</th>
+		<th>Required</th>
+		<th>Description</th>
+	</tr>
+	<!-- Request Parameter -->
+<tr>
+	<td class="parameter-name">id</td>
+	<td>Integer</td>
+	<td>True</td>
+	<td>Id of the Pet</td>
+</tr>
+</table>
+        
+        
+        
+        
+        <!-- Response codes -->
+<h4>Response codes</h4>
+<div class="response-codes">
+	<!-- response code -->
+<div class="response-code"> 
+	<div class="response-code-box-200">200</div>
+	<div class="response-code-description">OK. When pet was deleted successful.</div>
+</div><!-- response code -->
+<div class="response-code"> 
+	<div class="response-code-box-404">404</div>
+	<div class="response-code-description">Not Found. When pet with specified Id was not found.</div>
+</div>
+</div>
+    </div>
+
+</div>
+</body>
+</html>
