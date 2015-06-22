@@ -1,5 +1,6 @@
-### What is Radish?
 
+
+### What is Radish? <img src="https://raw.github.com/AlexanderKrutov/Radish/master/icon.png" width="48">
 Radish is a simple .Net library that allows you to auto-generate HTML-documentation for your REST API on the basis of attributes in the source code.
 Radish is an acronym that means **R**EST **A**PI **D**ocumentation **I**n the **S**ource to **H**tml.
 
