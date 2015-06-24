@@ -15,7 +15,7 @@ PM> Install-Package Radish
 - unlike the [ASP.NET Web API Help Page] solution, Radish does not require [WebHost], [Mvc] and [Razor] libraries, and suits for small self-hosting RESTful servers;
 - all documentation is a single HTML-page with CSS and JavaScript embedded.
 
-Writing documentation the source code with Radish looks like:
+Writing documentation in the source code with Radish looks like:
 
 ```csharp
 // Documentation starts here
