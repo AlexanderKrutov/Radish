@@ -15,10 +15,10 @@ PM> Install-Package Radish
 - unlike the [ASP.NET Web API Help Page] solution, Radish does not require [WebHost], [Mvc] and [Razor] libraries, and suits for small self-hosting RESTful servers;
 - all documentation is a single HTML-page with CSS and JavaScript embedded.
 
-From the source code point of view, writing documentation with Radish looks like:
+Writing documentation the source code with Radish looks like:
 
 ```csharp
-#region Radish
+// Documentation starts here
 [Order("pets", 2)]
 [Method("GET", "/api/pets/<id>", "pet-get-by-id")]
 [MethodTitle("Get pet")]
@@ -28,7 +28,8 @@ From the source code point of view, writing documentation with Radish looks like
 [ResponseBodyExample(@"{""Id"":1, ""AnimalType"":""Cat"",""Name"":""Lisa"",""Breed"":""Turkish Angora"",""Age"":2,""Color"":""White""}")]
 [ResponseCode(200, "OK. On successful result.")]
 [ResponseCode(404, "Not Found. When pet with specified id was not found.")]
-#endregion Radish
+// Documentation ends here
+
 [HttpGet]
 [Route("pets/{petId:long}")]
 [ResponseType(typeof(Pet))]
@@ -44,14 +45,14 @@ public IHttpActionResult GetPet(int petId)
 ```
 
 Radish uses own simple template engine to create HTML documentation page, and you can freely customize its output.
-Let's take a look on the output documentation examples ([ex. 1], [ex. 2]) for [this simple demo].
-Check the [guide] how to use Radish and customize your documentation page.
+Let's take a look on the output documentation examples ([example 1], [example 2]) for [this simple demo].
+Also check [the guide] how to use Radish.
 
 ### License
 Radish is licensed under Apache 2.0 license.  
 
 ### Credits
-Radish logo created by [Creative Stall] from [Noun Project].
+Radish icon created by [Creative Stall] from [Noun Project].
 
 [Swagger]:http://swagger.io/
 [ApiBlueprint]:https://apiblueprint.org/
@@ -59,9 +60,9 @@ Radish logo created by [Creative Stall] from [Noun Project].
 [WebHost]:http://www.nuget.org/packages/Microsoft.AspNet.WebApi.WebHost/
 [Mvc]:http://www.nuget.org/packages/Microsoft.AspNet.Mvc/
 [Razor]:http://www.nuget.org/packages/Microsoft.AspNet.Razor/
-[ex. 1]:https://cdn.rawgit.com/AlexanderKrutov/Radish/master/Radish.Demo.Output/Simple.html
-[ex. 2]:https://cdn.rawgit.com/AlexanderKrutov/Radish/master/Radish.Demo.Output/Bootstrap.html
+[example 1]:https://cdn.rawgit.com/AlexanderKrutov/Radish/master/Radish.Demo.Output/Simple.html
+[example 2]:https://cdn.rawgit.com/AlexanderKrutov/Radish/master/Radish.Demo.Output/Bootstrap.html
 [this simple demo]:https://github.com/AlexanderKrutov/Radish/tree/master/Radish.Demo
-[guide]:https://github.com/AlexanderKrutov/Radish/wiki
+[the guide]:https://github.com/AlexanderKrutov/Radish/wiki
 [Creative Stall]:https://thenounproject.com/creativestall/
 [Noun Project]:https://thenounproject.com/
