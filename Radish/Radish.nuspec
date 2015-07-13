@@ -12,9 +12,9 @@
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>$description$</description>
 	<summary>$description$</summary>
-    <releaseNotes>Initial version</releaseNotes>
-    <copyright>Copyright 2015</copyright>
-    <tags>REST Documentation</tags>
+    <releaseNotes>Fixed issues</releaseNotes>
+    <copyright>Copyright Alexander Krutov, 2015</copyright>
+    <tags>REST Documentation HelpPage WebAPI</tags>
     <dependencies>
     </dependencies>
   </metadata>
