@@ -86,7 +86,10 @@ namespace Radish
         /// </summary>
         /// <param name="key">Unique group key. All methods with this group key will be grouped together in one documentation section.</param>
         /// <param name="title">Group title. Will be displayed at the beginning of the documentation section.</param>
-        public void AddMethodGroup(string key, string title) { }
+        public void AddMethodGroup(string key, string title) 
+        {
+            AddMethodGroup(key, title, null, 0);
+        }
 
         /// <summary>
         /// Adds new group of REST API methods.
@@ -94,7 +97,10 @@ namespace Radish
         /// <param name="key">Unique group key. All methods with this group key will be grouped together in one documentation section.</param>
         /// <param name="title">Group title. Will be displayed at the beginning of the documentation section.</param>
         /// <param name="description">Group description. Will be placed after group title in the output.</param>        
-        public void AddMethodGroup(string key, string title, string description) { }
+        public void AddMethodGroup(string key, string title, string description) 
+        {
+            AddMethodGroup(key, title, description, 0);
+        }
 
         /// <summary>
         /// Adds new group of REST API methods.
@@ -102,7 +108,10 @@ namespace Radish
         /// <param name="key">Unique group key. All methods with this group key will be grouped together in one documentation section.</param>
         /// <param name="title">Group title. Will be displayed at the beginning of the documentation section.</param>
         /// <param name="order">Order of the group. Group with smallest order value will be placed first in the documentation.</param>
-        public void AddMethodGroup(string key, string title, uint order) { }
+        public void AddMethodGroup(string key, string title, uint order) 
+        {
+            AddMethodGroup(key, title, null, order);
+        }
 
         /// <summary>
         /// Adds new group of REST API methods.
