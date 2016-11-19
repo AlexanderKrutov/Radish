@@ -15,3 +15,6 @@
 *.PDF	 diff=astextplain
 *.rtf	 diff=astextplain
 *.RTF	 diff=astextplain
+
+# Exclude demo output directory content from the Linguist language statistics
+Radish.Demo.Output/* linguist-vendored
